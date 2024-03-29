@@ -6,7 +6,7 @@ Code for Cansat Competition 2024 Korea.
 Use Bluetooth to communicate with Ground Station.
 
 # Modules Used
-- OBC : Raspberry Pi 5
+- MPU : Raspberry Pi 5
 - IMU : EBIMU-9DOFV4
 - GPS : KGM4646XS5
 - Camera : Raspberry Pi Camera v3
