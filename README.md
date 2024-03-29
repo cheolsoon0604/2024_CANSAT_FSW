@@ -2,7 +2,7 @@
 Code for Cansat Competition 2024 Korea.
 
 # General Info
-※ This project is still on development ※
+※ This project is still on development ※  
 Use Bluetooth for communicate with Ground Station.
 
 # Modules Used
