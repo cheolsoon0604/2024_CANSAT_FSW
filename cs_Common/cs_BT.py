@@ -161,7 +161,7 @@ def BT_Trans_UART_Until(cnt) :
     for loop_cnt in range (cnt) :
         BT_Tx_Byte(TX_Queue.get())
 
-def BT_Rx_OP() :
+def BT_Rx_OP() : # TODO : Make System Parallelism
 
     # read esd110 value 
     while BT_serial.inWaiting():

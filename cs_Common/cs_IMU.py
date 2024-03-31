@@ -64,7 +64,4 @@ def IMU_Op() :
             print(roll,pitch,yaw,x,y,z)
             IMU_buf = ""
 
-for i in range(10):
-    IMU_Op()
-    time.sleep(0.1)
     

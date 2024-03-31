@@ -1,18 +1,22 @@
 import serial
 import time
 
-GPS_serial = serial.Serial('/dev/ttyAMA0', 9600, parity='N', timeout=0.001) #when connect to GPIO pins
+global GPS_serial
+global GPS_buf
 
-GPS_serial.isOpen()
+def GPS_Init_Set() :
+    GPS_serial = serial.Serial('/dev/ttyAMA0', 9600, parity='N', timeout=0.001)  # when connect to GPIO pins
 
-if GPS_serial.isOpen() == True :
-    print("GPS connected")
-else :
-    print("[GPS_Error] GPS not connected")
+    GPS_serial.isOpen()
 
-GPS_buf = ""
+    if GPS_serial.isOpen() == True:
+        print("GPS connected")
+    else:
+        print("[GPS_Error] GPS not connected")
 
-while True :
+    GPS_buf = ""
+
+def GPS_Op() :
     while GPS_serial.inWaiting():
 
         GPS_Raw_data = str(GPS_serial.read()).strip()

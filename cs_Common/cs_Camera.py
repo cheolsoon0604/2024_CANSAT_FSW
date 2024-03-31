@@ -42,7 +42,6 @@ def Camera_Op():
     else :
         print (f"[Error] {nowtime} Cam1_Error")
 
-
     picamera0.stop()
     picamera1.stop()
 
