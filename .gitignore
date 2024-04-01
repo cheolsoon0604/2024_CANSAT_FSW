@@ -2,7 +2,7 @@
 
 *.idea
 *.gitignore
-*.Camera_Image
-*.Camera_Image\Camera0
-*.Camera_Image\Camera1
-*.cs_CANSAT
+*Camera_Image
+*cs_CANSAT
+*LICENSE
+*README.MD
