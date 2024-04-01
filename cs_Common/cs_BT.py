@@ -7,18 +7,19 @@ RX_Queue = Queue()
 TX_Queue = Queue()
 
 global BT_serial
-global BT_buf
+global BT_Raw_data
+global BT_Buf
+
+BT_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001)
 
 def BT_Port_Speed_Set(Baurate) :
     # connect esd110
     # BT_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
-    BT_serial.Serial('/dev/ttyAMA0', Baurate, parity='N', timeout=0.001) # when connect to GPIO pins (tx4,rx5)
+    BT_serial = serial.Serial('/dev/ttyAMA0', Baurate, parity='N', timeout=0.001) # when connect to GPIO pins (tx4,rx5)
 
 def Bluetooth_Init_Set() :
-    BT_serial.isOpen()
-    BT_Port_Speed_Set(9600) # default baud rate : 9600
+    BT_Port_Speed_Set(115200) # default baud rate : 115200
     BT_ATZ()
-    BT_buf = ""  # for esd110
 
 def BT_STOP() :
     BT_serial.write(b'+') # str.encode('+')
@@ -163,8 +164,11 @@ def BT_Trans_UART_Until(cnt) :
 
 def BT_Rx_OP() : # TODO : Make System Parallelism
 
+    BT_buf = ""  # for esd110
+
     # read esd110 value 
     while BT_serial.inWaiting():
+
 
         BT_Raw_data = str(BT_serial.read()).strip()
         
@@ -174,11 +178,18 @@ def BT_Rx_OP() : # TODO : Make System Parallelism
         BT_buf = BT_buf.replace("'", "")  # remove (') and (b) because data has (') and (b) like this b'10.55'
         BT_buf = BT_buf.replace("b", "")
 
-        RX_Queue.put(BT_buf)
-        RX_Queue_Idx = RX_Queue_Idx + 1
+        #RX_Queue.put(BT_buf)
+        #RX_Queue_Idx = RX_Queue_Idx + 1
+        print(BT_buf)
 
         BT_buf = ""
 
+
+while True :
+    BT_Init()
+    BT_Rx_OP()
+
+    #print(BT_serial.name, BT_serial.baudrate, BT_serial.is_open)
 
 
 
