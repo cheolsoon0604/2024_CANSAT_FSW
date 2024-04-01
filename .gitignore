@@ -1,8 +1,7 @@
 # : comments
 
 *.idea
-*.gitignore
 *Camera_Image
 *cs_CANSAT
 *LICENSE
-*README.MD
+*README.md
