@@ -3,6 +3,11 @@ import time
 
 global GPS_serial
 global GPS_buf
+global GPS_Raw_data
+
+GPS_Buf = ''
+GPS_DATA = ''
+tmp = ''
 
 def GPS_Init_Set() :
     GPS_serial = serial.Serial('/dev/ttyAMA0', 9600, parity='N', timeout=0.001)  # when connect to GPIO pins
@@ -14,21 +19,34 @@ def GPS_Init_Set() :
     else:
         print("[GPS_Error] GPS not connected")
 
-    GPS_buf = ""
 
 def GPS_Op() :
-    while GPS_serial.inWaiting():
-
+    while GPS_serial.in_waiting:
         GPS_Raw_data = str(GPS_serial.read()).strip()
 
-        GPS_buf += GPS_Raw_data # buffering
-        #print(GPS_Raw_data) # for debug
+        GPS_Buf += GPS_Raw_data
+        GPS_Buf = GPS_Buf.replace("'", "")
+        GPS_Buf = GPS_Buf.replace("b", "")
 
-        GPS_buf = GPS_buf.replace("'","") # remove (') and (b) because data has (') and (b) like this b'10.55' -> 10.55
-        GPS_buf = GPS_buf.replace("b","") 
+        # $GPGGA,,,,,,0,00,,,M,0.0,M,,0000*48\r\n
 
-        print(GPS_buf) # for debug 
+        GPS_DATA += GPS_Buf
 
+        # print(GPS_DATA)
+
+        if GPS_DATA[0:5] == 'GPGGA' and GPS_Buf == '$':
+            tmp += GPS_DATA[:-1]
+            print(tmp)
+            GPS_DATA = ''
+            tmp = ''
+
+        if GPS_DATA[0:6] != '$GPGGA' and BT_Buf == '$':
+            GPS_DATA = ''
+            tmp = ''
+
+        BT_Buf = ''
+
+        '''
         if GPS_Raw_data[0:6] == '$GPGGA': # gpgga 형식 처리
             # $GPGGA,202530.00,5109.0262,N,11401.8407,W,5,40,0.5,1097.36,M,-17.00,M,18,TSTR*61
             (header, utc, latitude, lat_dir, longitude, long_dir, quality, sats, hdop, alt, 
@@ -37,8 +55,7 @@ def GPS_Op() :
 
         #else : 
             #print("[GPS_Error] satilite not connected")
-
-        GPS_buf = ""
+        '''
     
 
 
