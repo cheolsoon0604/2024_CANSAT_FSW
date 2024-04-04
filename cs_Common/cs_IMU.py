@@ -38,10 +38,36 @@ def IMU_Set_Acc_OFF() :
     IMU_serial.write(b'<soa0>\r\n')
 def IMU_Set_Acc_ON() :
     IMU_serial.write(b'<soa1>\r\n')
+def IMU_Set_Sens_Acc_2G() :
+    IMU_serial.write(b'<ssa1>\r\n')
+def IMU_Set_Sens_Acc_4G() :
+    IMU_serial.write(b'<ssa2>\r\n')
+def IMU_Set_Sens_Acc_8G() :
+    IMU_serial.write(b'<ssa3>\r\n')
+def IMU_Set_Sens_Acc_16G() :
+    IMU_serial.write(b'<ssa4>\r\n')
+def IMU_Set_Lpfa_OFF() :
+    IMU_serial.write(b'<lpfa0>\r\n')
+def IMU_Set_Lpfa_92Hz() :
+    IMU_serial.write(b'<lpfa5>\r\n')
+def IMU_Set_Lpfa_250Hz() :
+    IMU_serial.write(b'<lpfa7>\r\n')
 def IMU_Set_Gyro_OFF() :
     IMU_serial.write(b'<sog0>\r\n')
 def IMU_Set_Gyro_ON() :
     IMU_serial.write(b'<sog1>\r\n')
+def IMU_Set_Lpfg_OFF() :
+    IMU_serial.write(b'<lpfg0>\r\n')
+def IMU_Set_Lpfg_92Hz() :
+    IMU_serial.write(b'<lpfg5>\r\n')
+def IMU_Set_Lpfg_250Hz() :
+    IMU_serial.write(b'<lpfg7>\r\n')
+def IMU_Set_Lpf_OFF() :
+    IMU_serial.write(b'<lpf0>\r\n')
+def IMU_Set_Lpf_92Hz() :
+    IMU_serial.write(b'<lpf5>\r\n')
+def IMU_Set_Lpf_250Hz() :
+    IMU_serial.write(b'<lpf7>\r\n')
 def IMU_Set_Output_Temp_OFF() :
     IMU_serial.write(b'<sot0>\r\n')
 def IMU_Set_Output_Temp_ON() :
