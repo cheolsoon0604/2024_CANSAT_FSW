@@ -19,12 +19,45 @@ except:
     print("Failed to open file")
 '''
 
-# connect ebimu
-#IMU_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
-IMU_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001) #when connect to GPIO pins (tx4,rx5)
+global IMU_serial
+global IMU_Buf
 
-
-IMU_serial.isOpen()
+def IMU_Init() :
+    # connect ebimu
+    # IMU_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
+    IMU_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)
+def IMU_reset() :
+    IMU_serial.write(b'<reset>\r\n')
+def IMU_Output_Rate_polling() :
+    IMU_serial.write(b'<sor0>\r\n')
+def IMU_115200() :
+    IMU_serial.write(b'<sb5>\r\n')
+def IMU_921600() :
+    IMU_serial.write(b'<sb8>\r\n')
+def IMU_Set_Acc_OFF() :
+    IMU_serial.write(b'<soa0>\r\n')
+def IMU_Set_Acc_ON() :
+    IMU_serial.write(b'<soa1>\r\n')
+def IMU_Set_Gyro_OFF() :
+    IMU_serial.write(b'<sog0>\r\n')
+def IMU_Set_Gyro_ON() :
+    IMU_serial.write(b'<sog1>\r\n')
+def IMU_Set_Output_Temp_OFF() :
+    IMU_serial.write(b'<sot0>\r\n')
+def IMU_Set_Output_Temp_ON() :
+    IMU_serial.write(b'<sot1>\r\n')
+def IMU_Set_Output_Distance_OFF() :
+    IMU_serial.write(b'<sod0>\r\n')
+def IMU_Set_Output_Distance_Local() :
+    IMU_serial.write(b'<sod1>\r\n')
+def IMU_Set_Output_Distance_Global() :
+    IMU_serial.write(b'<sod2>\r\n')
+def IMU_Set_Output_Euler() :
+    IMU_serial.write(b'<sof0>\r\n')
+def IMU_Output_Code_ASCII() :
+    IMU_serial.write(b'<soc1>\r\n')
+def IMU_Output_Code_HEX() :
+    IMU_serial.write(b'<soc2>\r\n')
 
 def IMU_Op() :
 
