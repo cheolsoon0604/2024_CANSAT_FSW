@@ -1,36 +1,35 @@
-import serial 
 import time
+import serial
 
 '''
-# make file and open
-def Time_Return():
-    now = time.localtime(time.time())
-    nowtime = time.strftime("%Y%m%d_%I%M%S%_P", now)
-    return nowtime
+def time_return() :
+    ns_time = time.time_ns() % 1000000000
+    ms_time = ns_time // 1000000
 
-nowtime = Time_Return()
-filePath = "Cansat_Log/cs_Log/"
-fileName = f"{filePath}CANSAT_LOG_{nowtime}"
+    timestamp = time.time()
+    lt = time.localtime(timestamp)
+    formatted = time.strftime("%Y%m%d_%H%M%S", lt)
+    return formatted + str(ms_time)
 
-try:
-    f = open(fileName, 'w')
-    log = open(fileName,'w')
-except:
-    print("Failed to open file")
+print(time_return())
+
 '''
 
-global IMU_serial
-global IMU_Buf
+IMU_serial = serial.Serial('COM3', 921600, stopbits=1, parity='N', timeout=0.001)
 
 # ----------------- Default Setting -----------------
 def IMU_Init() :
     # connect ebimu
     # IMU_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
-    IMU_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)
+    #IMU_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)
+    #IMU_serial = serial.Serial('COM3', 115200, parity='N', timeout=0.001)
 
     IMU_reset()
 
     IMU_Output_Rate_polling()
+    #print(IMU_serial.read(4))
+
+
     IMU_Output_Code_ASCII()
     IMU_Output_Euler()
 
@@ -41,19 +40,35 @@ def IMU_Init() :
 
     IMU_921600()
 
-    IMU_Set_Baudrate(921600)
+    #IMU_Set_Baudrate(921600)
 
-def IMU_Set_Baudrate(baudrate) :
-    IMU_serial = serial.Serial('/dev/ttyAMA0', baudrate, parity='N', timeout=0.001)
+
+#def IMU_Set_Baudrate(baudrate) :
+    #IMU_serial = serial.Serial('/dev/ttyAMA0', baudrate, parity='N', timeout=0.001)
 
 def IMU_reset() :
     IMU_serial.write(b'<reset>\r\n')
 
 def IMU_Cfg() :
-    IMU_serial.write(b'<cfg>')
+    IMU_serial.write(b'<cfg>\r\n')
 
 def IMU_Output_Rate_polling() :
     IMU_serial.write(b'<sor0>\r\n')
+
+def IMU_Output_Rate_1() :
+    IMU_serial.write(b'<sor1>\r\n')
+
+def IMU_Output_Rate_10() :
+    IMU_serial.write(b'<sor10>\r\n')
+
+def IMU_Output_Rate_100() :
+    IMU_serial.write(b'<sor100>\r\n')
+
+def IMU_Output_Rate_1000() :
+    IMU_serial.write(b'<sor1000>\r\n')
+
+def IMU_Output_Rate_400() :
+    IMU_serial.write(b'<sor400>\r\n')
 
 def IMU_115200() :
     IMU_serial.write(b'<sb5>\r\n')
@@ -63,6 +78,9 @@ def IMU_921600() :
 
 def IMU_Output_Euler() :
     IMU_serial.write(b'<sof0>\r\n')
+
+def IMU_Output_Quaternion() :
+    IMU_serial.write(b'<sof1>\r\n')
 
 def IMU_Output_Code_ASCII() :
     IMU_serial.write(b'<soc1>\r\n')
@@ -140,42 +158,18 @@ def IMU_Set_Sens_Gyro_2000dps() :
 
 # ------------------------- Operation -------------------------
 
-def IMU_Op() :
+def IMU_Op():
+    IMU_DATA = ""
 
-    IMU_buf = "" # for ebimu
+    IMU_serial.write(b'*')
 
-    # read ebimu value 
-    while IMU_serial.inWaiting():
+    if IMU_serial.in_waiting >= 100 :
+        IMU_serial.cancel_read()
 
-        IMU_Raw_data = str(IMU_serial.read()).strip()
-        
-        # print(data) # for debuging
+    IMU_DATA += str(IMU_serial.read(IMU_serial.in_waiting))
+    IMU_DATA = IMU_DATA.replace("*", "")
+    IMU_DATA = IMU_DATA.replace("'", "")
+    IMU_DATA = IMU_DATA.replace("b", "")
 
-        IMU_buf += IMU_Raw_data # buffering
-        if IMU_Raw_data[3] == "n": # last data of one line is '\n' so when data[3] is n then do decode 
-            IMU_buf = IMU_buf.replace("'","") # remove (') and (b) because data has (') and (b) like this b'10.55' 
-            IMU_buf = IMU_buf.replace("b","") 
-
-            # split each data
-            try :
-                roll, pitch, yaw, x, y, z = map(float, IMU_buf[1:-4].split(','))
-
-            except Exception as e:
-                print(list(map(float,IMU_buf[1:-4].split(','))))
-                #log.write(str(e)+"\n")
-                IMU_buf = ""
-                continue
-            
-            try :
-                IMU_data = [roll,pitch,yaw,x,y,z]
-                writeString = "*"+str(IMU_data)[1:-1]+"\n"
-                #f.write(writeString)
-
-            except Exception as e:
-                print("Error from file writing : ", e)
-                #log.write(str(e)+"\n") # it also can make error but .. maybe.. i dont think so
-                continue
-            print(roll,pitch,yaw,x,y,z)
-            IMU_buf = ""
-
-    
+    if IMU_DATA :
+        print(IMU_DATA)

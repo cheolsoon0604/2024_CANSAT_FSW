@@ -9,10 +9,8 @@ GPS_Buf = ''
 GPS_DATA = ''
 tmp = ''
 
-def GPS_Init_Set() :
+def GPS_Init() :
     GPS_serial = serial.Serial('/dev/ttyAMA0', 9600, parity='N', timeout=0.001)  # when connect to GPIO pins
-
-    GPS_serial.isOpen()
 
     if GPS_serial.isOpen() == True:
         print("GPS connected")
