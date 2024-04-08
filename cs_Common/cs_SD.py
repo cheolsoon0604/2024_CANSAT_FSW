@@ -1,14 +1,28 @@
+import csv
+
 import cs_Time
 
 # make file and open
 
 
-nowtime = cs_Time.Time_Return()
-filePath = "Cansat_Log/cs_Log/"
-fileName = f"{filePath}CANSAT_LOG_{nowtime}"
+FileTime = cs_Time.Time_Return()
+FilePath = "Cansat_Log/cs_Log/"
+FileName = f"{FilePath}CANSAT_LOG_{FileTime}.csv"
 
-try:
-    f = open(fileName, 'w')
-    log = open(fileName,'w')
-except:
-    print("Failed to open file")
+global CANSAT_LOG
+global CANSAT_Logger
+
+CANSAT_Logger = csv.writer(CANSAT_LOG)
+def SD_LOG_FILE_OPEN() :
+    try:
+        CANSAT_LOG = open(FileName, 'w')
+
+    except:
+        print("Failed to open file")
+
+def SD_LOG_Op(macData) :
+    CANSAT_Logger.writerow(macData)
+
+
+
+

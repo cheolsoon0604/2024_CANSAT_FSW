@@ -1,27 +1,13 @@
-import time
 import serial
 
-'''
-def time_return() :
-    ns_time = time.time_ns() % 1000000000
-    ms_time = ns_time // 1000000
-
-    timestamp = time.time()
-    lt = time.localtime(timestamp)
-    formatted = time.strftime("%Y%m%d_%H%M%S", lt)
-    return formatted + str(ms_time)
-
-print(time_return())
-
-'''
-
-IMU_serial = serial.Serial('COM3', 921600, stopbits=1, parity='N', timeout=0.001)
+global IMU_serial
+#IMU_serial = serial.Serial('COM3', 921600, stopbits=1, parity='N', timeout=0.001)
 
 # ----------------- Default Setting -----------------
 def IMU_Init() :
     # connect ebimu
     # IMU_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
-    #IMU_serial = serial.Serial('/dev/ttyAMA0', 115200, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)
+    IMU_serial = serial.Serial('/dev/ttyAMA0', 921600, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)
     #IMU_serial = serial.Serial('COM3', 115200, parity='N', timeout=0.001)
 
     IMU_reset()
@@ -40,11 +26,11 @@ def IMU_Init() :
 
     IMU_921600()
 
-    #IMU_Set_Baudrate(921600)
+    IMU_Set_Baudrate(921600)
 
 
-#def IMU_Set_Baudrate(baudrate) :
-    #IMU_serial = serial.Serial('/dev/ttyAMA0', baudrate, parity='N', timeout=0.001)
+def IMU_Set_Baudrate(baudrate) :
+    IMU_serial = serial.Serial('/dev/ttyAMA0', baudrate, parity='N', timeout=0.001)
 
 def IMU_reset() :
     IMU_serial.write(b'<reset>\r\n')
