@@ -20,8 +20,8 @@ def IMU_Init() :
     IMU_Output_Euler()
 
     IMU_Set_Acc_ON() # or IMU_Set_Velo_Local() / IMU_Set_Velo_Global()
-    IMU_Set_Gyro_ON()
-    IMU_Set_Temp_ON()
+    IMU_Set_Gyro_OFF()
+    IMU_Set_Temp_OFF()
     IMU_Set_Distance_Global()
 
     IMU_921600()
@@ -149,13 +149,10 @@ def IMU_Op():
 
     IMU_serial.write(b'*')
 
-    if IMU_serial.in_waiting >= 100 :
-        IMU_serial.cancel_read()
-
     IMU_DATA += str(IMU_serial.read(IMU_serial.in_waiting))
     IMU_DATA = IMU_DATA.replace("*", "")
     IMU_DATA = IMU_DATA.replace("'", "")
     IMU_DATA = IMU_DATA.replace("b", "")
 
     if IMU_DATA :
-        print(IMU_DATA)
+        print(IMU_DATA) # LOG OPERATION HERE
