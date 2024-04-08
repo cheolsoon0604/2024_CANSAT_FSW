@@ -5,7 +5,7 @@ from cs_Common import cs_IMU
 #from cs_Common import cs_SD
 
 def cs_setup() :
-    print("CANSAT Setup")
+    print("CANSAT Setup") # TODO : LOG OPERATION (SetUp)
 
     cs_Camera.Camera_SetUp()
     cs_GPS.GPS_Init()
@@ -16,4 +16,5 @@ def cs_loop() :
     cs_Camera.Camera_Op()
     cs_GPS.GPS_Op()
     cs_IMU.IMU_Op()
+    # TODO : LIFE SIGN LOG OPERATION (cs_Time.Time_Return()) 추가 필요
 

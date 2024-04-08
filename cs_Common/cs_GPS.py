@@ -10,7 +10,7 @@ GPS_DATA = ''
 tmp = ''
 
 def GPS_Init() :
-    GPS_serial = serial.Serial('/dev/ttyAMA0', 9600, parity='N', timeout=0.001)  # when connect to GPIO pins
+    GPS_serial = serial.Serial('/dev/ttyAMA0', baudrate=9600, parity='N', timeout=0.001)  # when connect to GPIO pins
 
     if GPS_serial.isOpen() == True:
         print("GPS connected")
@@ -18,7 +18,8 @@ def GPS_Init() :
         print("[GPS_Error] GPS not connected")
 
 
-def GPS_Op() :
+def GPS_Op() : # TODO : GPS DATA BYTE 계산, Serial Read 최적화
+
     while GPS_serial.in_waiting:
         GPS_Raw_data = str(GPS_serial.read()).strip()
 

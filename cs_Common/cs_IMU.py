@@ -4,7 +4,7 @@ global IMU_serial
 #IMU_serial = serial.Serial('COM3', 921600, stopbits=1, parity='N', timeout=0.001)
 
 # ----------------- Default Setting -----------------
-def IMU_Init() :
+def IMU_Init() : # TODO : 함수 호출시 일부 함수 작동 X 해결
     # connect ebimu
     # IMU_serial = serial.Serial('/dev/ttyUSB0',115200, parity='N', timeout=0.001) #when connect to usb
     IMU_serial = serial.Serial('/dev/ttyAMA0', 921600, parity='N', timeout=0.001)  # when connect to GPIO pins (tx4,rx5)

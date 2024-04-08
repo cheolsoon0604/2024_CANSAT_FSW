@@ -55,7 +55,7 @@ def Cam1_Img_Cap() :
         print(f"[Error] {now_time} Cam1_Error")
 
 
-def Camera_Op():
+def Camera_Op(): # TODO : 라즈베리파이 환경 테스트 필요
     Cam0_Img_Cap()
     Cam1_Img_Cap()
 

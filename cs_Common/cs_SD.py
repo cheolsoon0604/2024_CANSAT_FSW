@@ -20,7 +20,7 @@ def SD_LOG_FILE_OPEN() :
     except:
         print("Failed to open file")
 
-def SD_LOG_Op(macData) :
+def SD_LOG_Op(macData) : # TODO : LOG OPERATION 함수 구현 필요
     CANSAT_Logger.writerow(macData)
 
 
